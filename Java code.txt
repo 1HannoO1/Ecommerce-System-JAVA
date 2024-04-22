@@ -1,0 +1,355 @@
+import java.util.Scanner;
+public class EcommerceSystem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to the E-Commerce System!\n");
+
+        System.out.print("Please enter your ID: ");
+        int customerId = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Please enter your name: ");
+        String customerName = scanner.nextLine();
+
+        System.out.print("Please enter your address: ");
+        String customerAddress = scanner.nextLine();
+
+
+        Customer customer = new Customer(customerId, customerName, customerAddress);
+        ElectronicProduct electronicProduct = new ElectronicProduct(1, "Smartphone", 599.9, "Samsung", 1);
+        ClothingProduct clothingProduct = new ClothingProduct(2, "T-shirt", 19.99, "Medium", "Cotton");
+        BookProduct bookProduct = new BookProduct(3, "OOP", 39.99, "O’Reilly", "X Publications");
+
+
+        System.out.print("How many products would you want to add to your cart? ");
+        int numProducts = scanner.nextInt();
+
+
+        Cart cart = new Cart(customerId, numProducts);
+        for (int i = 0; i < numProducts; i++) {
+            System.out.print("Which product would you like to add? 1 - Smartphone, 2 - T-shirt, 3 - OOP :");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    cart.addProduct(electronicProduct, i);
+                    break;
+                case 2:
+                    cart.addProduct(clothingProduct, i);
+                    break;
+                case 3:
+                    cart.addProduct(bookProduct, i);
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+                    i -= 1;
+            }
+        }
+
+
+        System.out.println("Would you like to place the order? (1 - Yes, 2 - No)");
+
+        int choice = scanner.nextInt();
+        if (choice == 1) {
+            Order order = cart.placeOrder();
+            System.out.println("Order placed successfully!");
+            System.out.println("Order Details:");
+            order.printOrderInfo();
+        } else {
+            System.out.println("Order cancelled.");
+        }
+    }
+}
+
+
+
+
+class Product {
+    protected int productId;
+    protected String name;
+    protected double price;
+
+    public Product(int productId, String name, double price) {
+        this.productId = Math.abs(productId);
+        this.name = name;
+        this.price = Math.abs(price);
+    }
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = Math.abs(productId);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = Math.abs(price);
+    }
+}
+
+
+
+
+class ElectronicProduct extends Product {
+    private String brand;
+    private int warrantyPeriod;
+
+    public ElectronicProduct(int productId, String name, double price, String brand, int warrantyPeriod) {
+        super(productId, name, price);
+        this.brand = brand;
+        this.warrantyPeriod = Math.abs(warrantyPeriod);
+    }
+    public String getBrand() {
+        return brand;
+    }
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public int getWarrantyPeriod() {
+        return warrantyPeriod;
+    }
+    public void setWarrantyPeriod(int warrantyPeriod) {
+        this.warrantyPeriod = Math.abs(warrantyPeriod);
+    }
+}
+
+
+
+
+
+class ClothingProduct extends Product {
+    private String size;
+    private String fabric;
+
+    public ClothingProduct(int productId, String name, double price, String size, String fabric) {
+        super(productId, name, price);
+        this.size = size;
+        this.fabric = fabric;
+    }
+    public String getSize() {
+        return size;
+    }
+    public void setSize(String size) {
+        this.size = size;
+    }
+    public String getFabric() {
+        return fabric;
+    }
+    public void setFabric(String fabric) {
+        this.fabric = fabric;
+    }
+}
+
+
+
+
+
+class BookProduct extends Product {
+    private String author;
+    private String publisher;
+
+    public BookProduct(int productId, String name, double price, String author, String publisher) {
+        super(productId, name, price);
+        this.author = author;
+        this.publisher = publisher;
+    }
+    public String getAuthor() {
+        return author;
+    }
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+    public String getPublisher() {
+        return publisher;
+    }
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+}
+
+
+
+
+
+class Customer {
+    private int customerId;
+    private String name;
+    private String address;
+
+    public Customer(int customerId, String name, String address) {
+        this.customerId = Math.abs(customerId);
+        this.name = name;
+        this.address = address;
+    }
+    public int getCustomerId() {
+        return customerId;
+    }
+    public void setCustomerId(int customerId) {
+        this.customerId = Math.abs(customerId);
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+}
+
+
+
+
+
+class Cart {
+    private int customerId;
+    private int nProducts;
+    private Product[] products;
+
+    public Cart(int customerId, int nProducts) {
+        this.customerId = Math.abs(customerId);
+        this.nProducts = Math.abs(nProducts);
+        this.products = new Product[nProducts];
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+    public void setCustomerId(int customerId) {
+        this.customerId = Math.abs(customerId);
+    }
+    public int getNProducts() {
+        return nProducts;
+    }
+    public void setNProducts(int nProducts) {
+        this.nProducts = Math.abs(nProducts);
+    }
+    public Product[] getProducts() {
+        return products;
+    }
+    public void setProducts(Product[] products) {
+        this.products = products;
+    }
+
+
+    public void addProduct(Product product, int index) {
+        if (index >= 0 && index < nProducts) {
+            products[index] = product;
+        }
+    }
+
+
+    public void removeProduct(Product product) {
+        for (int i = 0; i < products.length; i++){
+            if (products[i] == product){
+                products[i] = null;
+                this.nProducts--;
+                break;
+            }
+        }
+    }
+
+
+    public double calculatePrice() {
+        double totalPrice = 0;
+        for (int i = 0; i < products.length; i++) {
+                totalPrice += products[i].getPrice();
+
+        }
+        return totalPrice;
+    }
+
+
+    public Order placeOrder() {
+        double totalPrice = calculatePrice();
+        Order order = new Order(customerId, generateOrderId(), products, totalPrice);
+        return order;
+    }
+
+
+    private int generateOrderId() {
+        return (int) (Math.random() * 10000);
+    }
+}
+
+
+
+
+
+class Order {
+    private int customerId;
+    private int orderId;
+    private Product[] products;
+    private double totalPrice;
+
+    public Order(int customerId, int orderId, Product[] products,double totalPrice) {
+        this.customerId = Math.abs(customerId);
+        this.orderId = Math.abs(orderId);
+        this.products = products;
+        this.totalPrice = Math.abs(totalPrice);
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+    public void setCustomerId(int customerId) {
+        this.customerId = Math.abs(customerId);
+    }
+    public int getOrderId() {
+        return orderId;
+    }
+    public void setOrderId(int orderId) {
+        this.orderId = Math.abs(orderId);
+    }
+    public Product[] getProducts() {
+        return products;
+    }
+    public void setProducts(Product[] products) {
+        this.products = products;
+    }
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+
+    private double calculateTotalPrice() {
+        double total = 0;
+        for (int i = 0; i < products.length; i++) {
+            total += products[i].getPrice();
+
+        }
+        return total;
+    }
+
+
+    public String printOrderInfo() {
+        System.out.println("Order ID: " + orderId);
+        System.out.println("Customer ID: " + customerId);
+        System.out.println("Products:");
+        for (int i = 0; i < products.length; i++) {
+            Product product = products[i];
+            System.out.println(product.getName() + " - $" + product.getPrice());
+        }
+        System.out.println("Total Price: $" + totalPrice);
+        return null;
+    }
+}
